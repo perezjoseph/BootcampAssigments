@@ -47,14 +47,16 @@ img {
 
 #part2_container {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-align: center;
-    width: 500px;
+    width: 100%
+    
 }
 .flexmid{
     justify-content: center; 
     flex-wrap: wrap; 
-    gap: 10px; 
+    gap: 20px; 
     display: flex;
+    text-align: center;
+    
 }
 #part2_container h1 {
     text-align: center;
@@ -65,6 +67,7 @@ div.polaroid {
     background-color: aliceblue;
     padding: 10px;
     float:left;
+
   }
 div.polaroid p {
     font-size: 9px;
