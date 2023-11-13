@@ -1,0 +1,132 @@
+body {
+    background-color: lightgray;
+    margin: 0;
+    display: flexbox;
+    flex-direction: column;
+}
+.Heading {
+    position:absolute;
+    color: white;
+    bottom: 10%;
+    left: 13%;
+    text-transform:uppercase;
+    font-size: 2vw;
+}
+h5.Heading {
+    padding-bottom: 2px;
+}
+#part1_container_ {
+    position: relative;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.element{
+    position:relative;
+}
+#studio{
+    position:absolute;
+    color: white;
+    text-transform:uppercase;
+    top: 3%;
+    left: 7%;
+    font-size: 2vw;
+}
+img {
+    width: 100%;
+}
+.burger div {
+    background-color: rgb(251, 252, 253);
+    width: 15px;
+    height: 3px;
+    margin: 2px;
+}
+.burger {
+    position: absolute;
+    right: 5%;
+    top: 2%
+}
+
+#part2_container {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    width: 100%
+    
+}
+.flexmid{
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    display: flex;
+    text-align: center;
+    
+}
+#part2_container h1 {
+    text-align: center;
+}
+div.polaroid {
+    width: 15rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: aliceblue;
+    padding: 10px;
+    float:left;
+    margin-bottom: 10% ;
+  }
+div.polaroid p {
+    font-size: 9px;
+    font-style: italic;
+    font-weight: lighter;
+}
+div.polaroid h5 {
+    font-size: 16px;
+    font-weight: lighter;
+    margin: 0;
+}
+div.polaroid img{
+    object-fit: cover;
+    width: 230px;
+    height: 230px;
+}
+div.polaroid a {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration-color: rgb(160, 160, 94);
+    text-decoration-thickness: 2px;
+    color: black;
+}
+.link {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    text-decoration: underline;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: bold;
+    text-decoration-color: rgb(160, 160, 94);
+    text-decoration-thickness: 2px;
+    color: black;
+}
+dialog {
+    padding: 0.rem;
+    background: white;
+    border-radius: 0.25 rem;
+    z-index: 10;
+}
+
+.modal {
+    /*display:none; */
+    position: fixed;
+    z-index: 1;
+    left:0;
+    top:0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 50% auto;
+    padding: 20px;
+    width: 70%;
+}
