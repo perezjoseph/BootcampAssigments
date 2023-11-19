@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './App.css'
+import image from './image.jpg';
 const TableItems = [{
     Month: 'Nov',
     Day: '17',
@@ -18,7 +19,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <App navItems={navItems} tableItems={TableItems} />
+    <App navItems={navItems} tableItems={TableItems} image={image} />
   </React.StrictMode>
 );
 

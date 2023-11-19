@@ -1,4 +1,4 @@
-function App({ navItems, tableItems }) {
+function App({ navItems, tableItems, image }) {
     return (
         <div className="container"> 
             <header className="header">
@@ -13,7 +13,7 @@ function App({ navItems, tableItems }) {
             </nav>
             <main className="main-content">
                 <div className="image-grid">
-                <img className="image-block" src="/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_(cropped).jpg" alt="View of Empire State Building" />        
+                <img className="image-block" src={image} />        
                 </div>
                 <div className="table">
                     {generateTable(tableItems)}
