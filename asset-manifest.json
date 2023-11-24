@@ -1,14 +1,13 @@
 {
   "files": {
-    "main.css": "/BootcampAssignments/static/css/main.134c0f25.css",
-    "main.js": "/BootcampAssignments/static/js/main.4a2021c9.js",
-    "static/media/tree-736885_640.jpg": "/BootcampAssignments/static/media/tree-736885_640.a948df326fd2bbf8e56d.jpg",
+    "main.css": "/BootcampAssignments/static/css/main.220268f9.css",
+    "main.js": "/BootcampAssignments/static/js/main.a19394aa.js",
     "index.html": "/BootcampAssignments/index.html",
-    "main.134c0f25.css.map": "/BootcampAssignments/static/css/main.134c0f25.css.map",
-    "main.4a2021c9.js.map": "/BootcampAssignments/static/js/main.4a2021c9.js.map"
+    "main.220268f9.css.map": "/BootcampAssignments/static/css/main.220268f9.css.map",
+    "main.a19394aa.js.map": "/BootcampAssignments/static/js/main.a19394aa.js.map"
   },
   "entrypoints": [
-    "static/css/main.134c0f25.css",
-    "static/js/main.4a2021c9.js"
+    "static/css/main.220268f9.css",
+    "static/js/main.a19394aa.js"
   ]
 }
