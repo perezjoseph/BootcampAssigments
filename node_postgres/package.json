@@ -1,0 +1,12 @@
+{
+  "name": "node_postgres",
+  "version": "1.0.0",
+  "description": "A nodejs Application for bootcamp Fall 2023",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joseph Perez",
+  "license": "ISC"
+}
