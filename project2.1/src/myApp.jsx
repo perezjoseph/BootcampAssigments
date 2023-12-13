@@ -1,23 +1,51 @@
 import React, { useState, useEffect } from 'react';
-
+import AddParrotForm from './form.jsx';
 function App({ navItems, tableItems, image}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [data, setData] = useState([]);
-    const [newParrot, setNewParrot] = useState({ name: '', specie: '', age: '', image: '' });
-    const [file, setFile] = useState();
-    function handleChange(e) {
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
+const handleFormSubmit = async (formData) => {
+  const data = new FormData();
+  data.append('name', formData.name);
+  data.append('specie', formData.specie);
+  data.append('age', formData.age);
+  data.append('image', formData.image);
+
+  try {
+    const response = await fetch('/insertparrot', {
+      method: 'POST',
+      body: data, // Do not set Content-Type header manually
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert('Parrot added successfully!');
+      // Additional logic after successful submission
+    } else {
+      alert(`Error: ${result.error}`);
     }
-    useEffect(() => {
-    fetch("/queryparrots").then(
-      res => res.json()
-      ).then(
-        data => {
-          setData(data)
-          }
-          )
-    }, [])
+  } catch (error) {
+    alert('An error occurred while adding the parrot.');
+    console.error('Error:', error);
+  }
+};
+
+useEffect(() => {
+  fetch("/queryparrots")
+    .then(res => {
+      if (!res.ok && res.status === 404) {
+        setData('Error: Resource not found');
+        throw new Error('404 Not Found');
+      }
+      return res.json();
+    })
+    .then(data => {
+      setData(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}, [])
+
     const openModal = () => {
     setIsModalOpen(true);
     };
@@ -25,40 +53,6 @@ function App({ navItems, tableItems, image}) {
     const closeModal = () => {
     setIsModalOpen(false);
     };
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewParrot(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-        };
-    
-const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(newParrot);
-
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newParrot) 
-    };
-
-    fetch('/insertparrot', requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch(error => {
-            console.error('There was an error!', error);
-        });
-
-    closeModal();
-};
     return (
         <div className="container"> 
             <header className="header">
@@ -73,43 +67,26 @@ const handleSubmit = (e) => {
             </nav>
             <main className="main-content">
                 <div className="Cards">
-                    {generateCards(data)}
+                  {
+                    Array.isArray(data) ? 
+                     generateCards(data) : 
+                    <p>{data}</p>
+                     }
                 </div>
             <div>
-                <button onClick={openModal}>Open the modal</button>
+                <div className="button-container">
+                <button className="open-modal-button" onClick={openModal}>Add New Parrot</button>
+                </div>
                 {isModalOpen && (
-                    <dialog id="modal" className="modal">
-                        <button onClick={closeModal}>X</button>
-                        <form onSubmit={handleSubmit}>
-                            <input 
-                                type="text"
-                                name="name"
-                                placeholder="Name"
-                                value={newParrot.name}
-                                onChange={handleInputChange}
-                            />
-                            <input 
-                                type="text"
-                                name="specie"
-                                placeholder="Species"
-                                value={newParrot.specie}
-                                onChange={handleInputChange}
-                            />
-                            <input 
-                                type="text"
-                                name="age"
-                                placeholder="Age"
-                                value={newParrot.age}
-                                onChange={handleInputChange}
-                            />
-                            <h2>Add Image:</h2>
-                            <input type="file" onChange={handleChange} />
-                            <img src={file} style={{ height:"200px" }} />
-                            <button type="submit">Add Parrot</button>
-                        </form>
-                    </dialog>
+                    <>
+                        <div className="modal-backdrop" onClick={closeModal}></div>
+                        <dialog id="modal" className="modal">
+                            <button id="close" onClick={closeModal}>X</button>
+                            <AddParrotForm onSubmit={handleFormSubmit} />
+                        </dialog>
+                    </>
                 )}
-            </div>
+            </div> 
             </main>
             <footer className="footer">
                 Made by Joseph Perez
@@ -128,7 +105,7 @@ function generateCards (cardItems) {
             </div>
             <h3>{item.name}</h3>
             <p>{item.specie}</p>
-            <p>{item.age}</p>
+            <p>{item.age} Years</p>
             <button>Send Treats</button>
         </div>
         ))}

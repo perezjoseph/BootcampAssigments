@@ -170,3 +170,123 @@
 dialog { 
     display: block;
 }
+/* General Form Styling */
+.form-container {
+  max-width: 400px; /* Adjust as per your design */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style for each input field */
+.form-container form input[type="text"],
+.form-container form input[type="file"],
+.form-container form input[type="number"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Style for the submit button */
+.form-container form button[type="submit"] {
+  padding: 10px;
+  background-color: #5cb85c; /* Choose a color that fits your design */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-container form button[type="submit"]:hover {
+  background-color: #4cae4c;
+}
+
+/* Error Message Styling */
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 15px;
+  }
+}
+.button-container {
+  display: flex;
+  justify-content: center; /* Aligns children (button) horizontally in the center */
+  align-items: center; /* Aligns children (button) vertically in the center */
+  height: 10vh;
+}
+/* Button to Open Modal */
+.open-modal-button {
+  padding: 10px 20px;
+  background-color: #007bff; /* Blue color, adjust as needed */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.open-modal-button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal Styling */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%; /* Adjust width as needed */
+  max-width: 500px; /* Maximum width */
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Close Button in Modal */
+#close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border: none;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background: #bbb;
+}
+
+/* Backdrop for Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+  z-index: 999; /* Below the modal but above other content */
+}

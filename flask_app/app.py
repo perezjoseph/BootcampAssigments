@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
+from werkzeug.utils import secure_filename
 import os
 app = Flask(__name__)
 db_username = os.getenv('DB_USERNAME', 'postgres')  
@@ -17,6 +18,7 @@ def create_db_if_not_exists():
     if not database_exists(full_db_uri):
         create_database(full_db_uri)
     engine.dispose()
+
 db = SQLAlchemy(app)
 class Parrot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -34,6 +36,13 @@ class Parrot(db.Model):
         }
         return {key: value for key, value in attributes.items() if value}
 create_db_if_not_exists()
+with app.app_context(): 
+    db.create_all()
+app.config['UPLOAD_FOLDER'] = '../project2.1/public'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 @app.route("/")
 def index():
     return 'Hello'
@@ -45,6 +54,7 @@ def queryparrots():
         if not parrots:
             print("No parrots found")
             return jsonify({"error": "No parrots found"}), 404
+            
 
         filtered_parrots = []
         for parrot in parrots:
@@ -63,26 +73,26 @@ def queryparrots():
 
 @app.route("/insertparrot", methods=["POST"])
 def insertparrot():
-    if request.method == 'POST':
-        try:
-            # Extracting data from JSON
-            data = request.get_json()  # or request.json
-            name = data["name"]
-            specie = data["specie"]
-            age = data["age"]
-            image = data["image"]
-    
-            # Creating a new Parrot instance
-            new_parrot = Parrot(name=name, specie=specie, age=age, image=image)
-            print(new_parrot)
-            # Adding the new instance to the database
+    try:
+        file = request.files['image']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file_path = '/' + filename
+            name = request.form['name']
+            specie = request.form['specie']
+            age = request.form['age']
+            if not age.isdigit():
+                return jsonify({"error": "Age must be an integer"}), 400
+            age = int(age)
+            new_parrot = Parrot(name=name, specie=specie, age=age, image=file_path)
             db.session.add(new_parrot)
             db.session.commit()
-    
             return jsonify({"message": "Parrot added successfully"}), 201
-        except Exception as e:
-            print(e)
-            return jsonify({"error": "Error adding parrot"}), 500
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Error adding parrot"}), 500
 if __name__ == '__main__':
     app.debug = True
     app.run(port=8080, host='0.0.0.0')
