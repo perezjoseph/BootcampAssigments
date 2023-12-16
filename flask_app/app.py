@@ -1,16 +1,23 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+from flask_cors import CORS, cross_origin
 from sqlalchemy_utils import database_exists, create_database
 from werkzeug.utils import secure_filename
 import os
+from uuid import uuid4
+from config import ApplicationConfig
+from flask_bcrypt import Bcrypt
+from flask_session import Session
 app = Flask(__name__)
+app.config.from_object(ApplicationConfig)
+bcrypt = Bcrypt(app)
+server_session = Session(app)
+CORS(app, supports_credentials=True)
 db_username = os.getenv('DB_USERNAME', 'postgres')  
 db_password = os.getenv('DB_PASSWORD', 'halorenacido') 
 db_hostname = os.getenv('DB_HOSTNAME', 'bootcamp.cyz5iexfko6q.us-east-1.rds.amazonaws.com')
-db_name = 'parrots'
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_username}:{db_password}@{db_hostname}/{db_name}'
-
+db_name= 'parrots'
 def create_db_if_not_exists():
     base_uri = f'postgresql://{db_username}:{db_password}@{db_hostname}/'
     full_db_uri = f'postgresql://{db_username}:{db_password}@{db_hostname}/{db_name}'
@@ -35,17 +42,26 @@ class Parrot(db.Model):
             'image': self.image
         }
         return {key: value for key, value in attributes.items() if value}
+def get_uuid():
+    return uuid4().hex
+class User(db.Model):
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    email = db.Column(db.String(345), unique=True)
+    password = db.Column(db.Text, nullable=False)
+   
+
 create_db_if_not_exists()
+
 with app.app_context(): 
     db.create_all()
-app.config['UPLOAD_FOLDER'] = '../project2.1/public'
+app.config['UPLOAD_FOLDER'] = 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 @app.route("/")
 def index():
-    return 'Hello'
+    return 'Flask is okSS'
 
 @app.route("/queryparrots", methods=["GET"])
 def queryparrots():
@@ -93,6 +109,61 @@ def insertparrot():
     except Exception as e:
         print(e)
         return jsonify({"error": "Error adding parrot"}), 500
+@app.route('/image/<image_name>')
+def serve_image(image_name):
+    image_path = f'./static/{image_name}'
+    try:
+        return send_file(image_path)
+    except FileNotFoundError:
+        abort(404, description="Image not found")
+@app.route("/@me")
+def get_current_user():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    user = User.query.filter_by(id=user_id).first()
+    return jsonify({
+        "id": user.id,
+        "email": user.email
+    }) 
+
+@app.route('/register', methods=["POST"])
+def register_user():
+    email = request.json["email"]
+    password = request.json["password"]
+    user_exists = User.query.filter_by(email=email).first() is not None
+    if user_exists:
+        return jsonify({"error": "User already exists"}), 409
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    new_user = User(email=email, password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({
+        "id": new_user.id,
+        "email": new_user.email
+        })
+@app.route('/login', methods=["POST"])
+def login_user():
+    email = request.json["email"]
+    password = request.json["password"]
+    user = User.query.filter_by(email=email).first()
+    user_id = user.id
+    if user is None:
+        return jsonify({"error": "Unauthorized"}), 401
+    if not bcrypt.check_password_hash(user.password, password):
+        return jsonify({"error": "Unauthorized"}), 401
+    session["user_id"]=user_id
+    return jsonify({
+        "id": user.id,
+        "email": user.email
+        })
+@app.route("/logout", methods=["POST"])
+def logout_user():
+    session.pop("user_id")
+    return "200"
+
 if __name__ == '__main__':
     app.debug = True
-    app.run(port=8080, host='0.0.0.0')
+    app.run(port=8081, host='0.0.0.0')

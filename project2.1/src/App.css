@@ -1,3 +1,7 @@
+body{
+    font-family: sans-serif;
+    margin: 0;
+}
 .container {
     display: flex;
     flex-direction: column;
@@ -35,7 +39,7 @@
     float: left;
 }
 
-.navbar ul li button {
+.navbar ul li a {
     display: block;
     color: white;
     text-align: center;
@@ -47,9 +51,9 @@
     transition: background-color 0.3s;
 }
 
-.navbar ul li button:hover {
-    background-color: #ddd;
-    color: black;
+/* Optional: Change background color on hover */
+.navbar ul li a:hover {
+    background-color: #555; /* or any other color you prefer */
 }
 
 /* Responsive styling */
@@ -105,7 +109,7 @@
 
 .image-container {
     width: 100%; 
-    height: 200px; 
+    height: auto; 
     margin-bottom: 16px; 
     overflow: hidden;
     border-radius: 12px; 
@@ -240,6 +244,7 @@ dialog {
   background-color: #007bff; /* Blue color, adjust as needed */
   color: white;
   border: none;
+  font-size: 1em;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -289,4 +294,99 @@ dialog {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
   z-index: 999; /* Below the modal but above other content */
+}
+/* Container for the search bar */
+/* Container for the search bar */
+.searchBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3%;
+    margin-bottom:5%;
+}
+
+/* Style for the input field */
+.inputsearch {
+    width: 300px; /* Width of the search bar */
+    padding: 10px 15px; /* Padding inside the search bar */
+    border: 2px solid #ddd; /* Border color */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    color: #333; /* Text color */
+    background-color: #fff; /* Background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle depth effect */
+    transition: all 0.3s ease; /* Transition for smooth effect on focus/hover */
+}
+
+/* Hover effect */
+.search-input:hover {
+    border-color: #bbb;
+}
+
+/* Focus effect */
+.search-input:focus {
+    outline: none; /* Removes the default outline */
+    border-color: #007bff; /* Changes border color when focused */
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.6); /* Changes box shadow color when focused */
+}
+/* Ensure the main content expands to fill the space */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space between main content and footer */
+    min-height: calc(100vh - 60px); /* Adjust based on your header/footer height */
+}
+
+/* About page styling */
+.about-page {
+    /* Existing styles... */
+}
+
+/* Contact information at the bottom */
+.contact-info {
+    margin-top: auto; /* Pushes it to the bottom */
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjustments for header and footer */
+.header, .footer {
+    flex-shrink: 0; /* Prevents shrinking */
+}
+.loginContainer {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.loginInput {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.loginLabel {
+  text-align: left;
+}
+
+.loginButton {
+  padding: 10px 20px;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.loginButtonDisabled {
+  background-color: grey;
 }
